@@ -1,0 +1,5 @@
+en:
+  errors:
+    messages:
+      pixel_dimentions_error: "Изображение не должно превышать размера %{x_size}x%{y_size}"
+      not_image: "Файл не является изображением"
