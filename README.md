@@ -1,5 +1,7 @@
 # CarrierWave::BombShelter
 
+[![Build Status](https://travis-ci.org/DarthSim/carrierwave-bombshelter.svg)](https://travis-ci.org/DarthSim/carrierwave-bombshelter)
+
 BombShelter is a module which protects your uploaders from image bombs. It checks pixel dimensions of uploaded image before ImageMagick touches it.
 
 ## How it works
