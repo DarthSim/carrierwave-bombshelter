@@ -38,13 +38,13 @@ class YourUploader < CarrierWave::Uploader::Base
 end
 ```
 
-By default BombShelter sets maximum allowed dimensions to 4096x4096, but you can set your own ones by defining `max_pixel_dimentions` method:
+By default BombShelter sets maximum allowed dimensions to 4096x4096, but you can set your own ones by defining `max_pixel_dimensions` method:
 
 ```ruby
 class YourUploader < CarrierWave::Uploader::Base
   include CarrierWave::BombShelter
 
-  def max_pixel_dimentions
+  def max_pixel_dimensions
     [1024, 1024]
   end
 end
