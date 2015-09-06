@@ -11,7 +11,7 @@ class TestBombShelter < Minitest::Test
       File.expand_path('../../tmp', __FILE__)
     end
 
-    def max_pixel_dimentions
+    def max_pixel_dimensions
       [5, 5]
     end
   end
