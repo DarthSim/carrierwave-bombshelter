@@ -1,0 +1,4 @@
+tr:
+  errors:
+    messages:
+      pixel_dimensions_error: "Göürüntü boyutu %{x_size}x%{y_size} ölçüsüne eşit yada daha küçük olmalıdır"
