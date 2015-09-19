@@ -1,0 +1,4 @@
+fr:
+  errors:
+    messages:
+      pixel_dimensions_error: "La taille de l'image doit être inférieure ou égale à %{x_size}x%{y_size}"
