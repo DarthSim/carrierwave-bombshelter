@@ -34,4 +34,10 @@ class TestBombShelter < Minitest::Test
       subject.store!(fixture_file('big.png'))
     end
   end
+
+  def test_not_image
+    assert_raises(CarrierWave::IntegrityError) do
+      subject.store!(fixture_file('not_image.png'))
+    end
+  end
 end

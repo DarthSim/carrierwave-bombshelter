@@ -14,7 +14,7 @@ module CarrierWave
     extend ActiveSupport::Concern
 
     included do
-      before :cache, :check_pixel_dimensions!
+      before :cache, :protect_from_image_bomb!
     end
 
     def max_pixel_dimensions
@@ -23,11 +23,21 @@ module CarrierWave
 
     private
 
-    def check_pixel_dimensions!(new_file)
-      sizes = FastImage.size(new_file.path)
-      max_sizes = max_pixel_dimensions
+    def protect_from_image_bomb!(new_file)
+      image = FastImage.new(new_file.path)
+      check_image_type!(image)
+      check_pixel_dimensions!(image)
+    end
 
-      return if !sizes || (sizes[0] <= max_sizes[0] && sizes[1] <= max_sizes[1])
+    def check_image_type!(image)
+      return if image.type
+      fail CarrierWave::IntegrityError,
+           I18n.translate(:'errors.messages.not_image')
+    end
+
+    def check_pixel_dimensions!(image)
+      max_sizes = max_pixel_dimensions
+      return if image.size[0] <= max_sizes[0] && image.size[1] <= max_sizes[1]
 
       fail CarrierWave::IntegrityError,
            I18n.translate(
