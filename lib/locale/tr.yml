@@ -1,5 +1,5 @@
 tr:
   errors:
     messages:
-      pixel_dimensions_error: "Göürüntü boyutu %{x_size}x%{y_size} ölçüsüne eşit yada daha küçük olmalıdır"
+      pixel_dimensions_error: "Görüntü boyutu %{x_size}x%{y_size} ölçüsüne eşit ya da daha küçük olmalıdır"
       not_image: "Bir görüntü dosyası değil"
