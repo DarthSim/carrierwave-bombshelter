@@ -24,7 +24,7 @@ module CarrierWave
     private
 
     def protect_from_image_bomb!(new_file)
-      image = FastImage.new(new_file.path)
+      image = FastImage.new(new_file.path || new_file.file)
       check_image_type!(image)
       check_pixel_dimensions!(image)
     end

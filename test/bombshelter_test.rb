@@ -2,6 +2,7 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'carrierwave/bombshelter'
 
 require 'minitest/autorun'
+require 'webmock/minitest'
 
 class TestBombShelter < Minitest::Test
   class TestUploader < CarrierWave::Uploader::Base
@@ -38,6 +39,18 @@ class TestBombShelter < Minitest::Test
   def test_not_image
     assert_raises(CarrierWave::IntegrityError) do
       subject.store!(fixture_file('not_image.png'))
+    end
+  end
+
+  def test_small_remote
+    stub_request(:get, 'http://example.com/small.png')
+      .to_return(status: 200, body: fixture_file('small.png'))
+    stub_request(:get, 'http://example.com/big.png')
+      .to_return(status: 200, body: fixture_file('big.png'))
+
+    subject.download!('http://example.com/small.png')
+    assert_raises(CarrierWave::IntegrityError) do
+      subject.download!('http://example.com/big.png')
     end
   end
 end
