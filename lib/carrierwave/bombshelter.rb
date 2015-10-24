@@ -14,7 +14,10 @@ module CarrierWave
     extend ActiveSupport::Concern
 
     included do
-      before :cache, :protect_from_image_bomb!
+      # `before` puts callback in the end of queue, but we need to run this
+      # callback first.
+      # before :cache, :protect_from_image_bomb!
+      _before_callbacks[:cache].unshift(:protect_from_image_bomb!)
     end
 
     def max_pixel_dimensions
