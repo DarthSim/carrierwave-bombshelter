@@ -27,7 +27,7 @@ module CarrierWave
     private
 
     def protect_from_image_bomb!(new_file)
-      image = FastImage.new(new_file.path || new_file.file)
+      image = FastImage.new(new_file.path || get_real_file(new_file.file))
       check_image_type!(image)
       check_pixel_dimensions!(image)
     end
@@ -47,6 +47,11 @@ module CarrierWave
              :'errors.messages.pixel_dimensions_error',
              x_size: max_sizes[0], y_size: max_sizes[1]
            )
+    end
+
+    def get_real_file(file)
+      return file unless file.is_a? CarrierWave::SanitizedFile
+      get_real_file(file.file)
     end
   end
 end

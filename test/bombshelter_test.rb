@@ -53,4 +53,12 @@ class TestBombShelter < Minitest::Test
       subject.download!('http://example.com/big.png')
     end
   end
+
+  def test_sanitized_sanitized_file
+    subject.store!(
+      CarrierWave::SanitizedFile.new(
+        CarrierWave::SanitizedFile.new(fixture_file('small.jpg'))
+      )
+    )
+  end
 end
