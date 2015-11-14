@@ -61,4 +61,11 @@ class TestBombShelter < Minitest::Test
       )
     )
   end
+
+  def test_callbeck_setup
+    uploader = Class.new(CarrierWave::Uploader::Base)
+    refute_includes(
+      uploader._before_callbacks[:cache], :protect_from_image_bomb!
+    )
+  end
 end

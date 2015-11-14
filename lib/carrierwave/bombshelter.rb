@@ -17,7 +17,8 @@ module CarrierWave
       # `before` puts callback in the end of queue, but we need to run this
       # callback first.
       # before :cache, :protect_from_image_bomb!
-      _before_callbacks[:cache].unshift(:protect_from_image_bomb!)
+      self._before_callbacks = _before_callbacks
+        .merge(cache: [:protect_from_image_bomb!] + _before_callbacks[:cache])
     end
 
     def max_pixel_dimensions
