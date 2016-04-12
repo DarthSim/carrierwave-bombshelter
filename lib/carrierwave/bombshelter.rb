@@ -42,7 +42,10 @@ module CarrierWave
 
     def check_pixel_dimensions!(image)
       max_sizes = max_pixel_dimensions
-      return if image.size[0] <= max_sizes[0] && image.size[1] <= max_sizes[1]
+
+      return if image.size &&
+                image.size[0] <= max_sizes[0] &&
+                image.size[1] <= max_sizes[1]
 
       raise CarrierWave::IntegrityError,
             I18n.translate(

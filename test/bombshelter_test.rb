@@ -42,6 +42,20 @@ class TestBombShelter < Minitest::Test
     end
   end
 
+  def test_invalid_size
+    fastimage = Class.new(FastImage) do
+      def size
+        nil
+      end
+    end
+
+    stub_const('FastImage', fastimage) do
+      assert_raises(CarrierWave::IntegrityError) do
+        subject.store!(fixture_file('small.png'))
+      end
+    end
+  end
+
   def test_small_remote
     stub_request(:get, 'http://example.com/small.png')
       .to_return(status: 200, body: fixture_file('small.png'))
@@ -67,5 +81,15 @@ class TestBombShelter < Minitest::Test
     refute_includes(
       uploader._before_callbacks[:cache], :protect_from_image_bomb!
     )
+  end
+
+  private
+
+  def stub_const(name, val)
+    orig = Object.const_get(name)
+    Object.silence_warnings { Object.const_set(name, val) }
+    yield
+  ensure
+    Object.silence_warnings { Object.const_set(name, orig) }
   end
 end
