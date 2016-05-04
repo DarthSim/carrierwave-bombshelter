@@ -42,6 +42,12 @@ class TestBombShelter < Minitest::Test
     end
   end
 
+  def test_image_type_whitelist
+    assert_raises(CarrierWave::IntegrityError) do
+      subject.store!(fixture_file('image.svg'))
+    end
+  end
+
   def test_invalid_size
     fastimage = Class.new(FastImage) do
       def size
@@ -76,7 +82,7 @@ class TestBombShelter < Minitest::Test
     )
   end
 
-  def test_callbeck_setup
+  def test_callback_setup
     uploader = Class.new(CarrierWave::Uploader::Base)
     refute_includes(
       uploader._before_callbacks[:cache], :protect_from_image_bomb!
@@ -87,9 +93,9 @@ class TestBombShelter < Minitest::Test
 
   def stub_const(name, val)
     orig = Object.const_get(name)
-    Object.silence_warnings { Object.const_set(name, val) }
+    Kernel.silence_warnings { Object.const_set(name, val) }
     yield
   ensure
-    Object.silence_warnings { Object.const_set(name, orig) }
+    Kernel.silence_warnings { Object.const_set(name, orig) }
   end
 end

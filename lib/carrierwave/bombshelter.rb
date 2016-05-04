@@ -26,6 +26,10 @@ module CarrierWave
       [4096, 4096]
     end
 
+    def image_type_whitelist
+      %i(jpeg png gif)
+    end
+
     private
 
     def protect_from_image_bomb!(new_file)
@@ -35,9 +39,9 @@ module CarrierWave
     end
 
     def check_image_type!(image)
-      return if image.type
+      return if image.type && image_type_whitelist.include?(image.type)
       raise CarrierWave::IntegrityError,
-            I18n.translate(:'errors.messages.not_image')
+            I18n.translate(:'errors.messages.unsupported_image_type')
     end
 
     def check_pixel_dimensions!(image)

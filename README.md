@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/DarthSim/carrierwave-bombshelter.svg)](https://travis-ci.org/DarthSim/carrierwave-bombshelter)
 
-BombShelter is a module which protects your uploaders from [image bombs](https://www.bamsoftware.com/hacks/deflate.html). It checks pixel dimensions of uploaded image before ImageMagick touches it.
+BombShelter is a module which protects your uploaders from image bombs like [https://www.bamsoftware.com/hacks/deflate.html]() and [http://www.openwall.com/lists/oss-security/2016/05/03/18](). It checks type and pixel dimensions of uploaded image before ImageMagick touches it.
 
 <a href="https://evilmartians.com/">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
@@ -10,7 +10,7 @@ BombShelter is a module which protects your uploaders from [image bombs](https:/
 
 ## How it works
 
-BombShelter uses [fastimage](https://github.com/sdsykes/fastimage) gem, which reads just a header of an image to get info about it. BombShelter compares pixel dimensions of the uploaded image with maximum allowed ones and raises integrity error if image is too big. Works perfectly with ActiveRecord validators.
+BombShelter uses [fastimage](https://github.com/sdsykes/fastimage) gem, which reads just a header of an image to get info about it. BombShelter compares type and pixel dimensions of the uploaded image with allowed ones and raises integrity error if image is too big or have unsupported type. Works perfectly with ActiveRecord validators.
 
 ## Installation
 
@@ -38,7 +38,23 @@ class YourUploader < CarrierWave::Uploader::Base
 end
 ```
 
-By default BombShelter sets maximum allowed dimensions to 4096x4096, but you can set your own ones by defining `max_pixel_dimensions` method:
+You can change allowed image types by defining `image_type_whitelist` method (default are `[:jpeg, :png, :gif]`):
+
+```ruby
+class YourUploader < CarrierWave::Uploader::Base
+  include CarrierWave::BombShelter
+
+  def image_type_whitelist
+    %i(bmp jpeg png gif)
+  end
+end
+```
+
+**Note:** Whitelisted file types should be supported by [fastimage](https://github.com/sdsykes/fastimage).
+
+**Warning:** Allowing `svg` and `mvg` is totally insecure.
+
+You can change maximum allowed dimensions by defining `max_pixel_dimensions` method (default is 4096x4096):
 
 ```ruby
 class YourUploader < CarrierWave::Uploader::Base
