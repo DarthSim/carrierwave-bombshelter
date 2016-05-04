@@ -1,5 +1,0 @@
-zh-TW:
-  errors:
-    messages:
-      pixel_dimensions_error: "圖片大小必須小於等於%{x_size}x%{y_size}"
-      not_image: "檔案不是圖片"

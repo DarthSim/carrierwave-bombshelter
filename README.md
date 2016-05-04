@@ -54,6 +54,10 @@ end
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/DarthSim/carrierwave-bombshelter. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org/) code of conduct.
 
+#### Locales
+
+Please don't create PRs that add locales. I can't maintain locales of languages that I don't know, and I can't poke you every time when I need to add a new string.
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
