@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/DarthSim/carrierwave-bombshelter.svg)](https://travis-ci.org/DarthSim/carrierwave-bombshelter)
 
-BombShelter is a module which protects your uploaders from image bombs like [https://www.bamsoftware.com/hacks/deflate.html]() and [http://www.openwall.com/lists/oss-security/2016/05/03/18](). It checks type and pixel dimensions of uploaded image before ImageMagick touches it.
+BombShelter is a module which protects your uploaders from image bombs like https://www.bamsoftware.com/hacks/deflate.html and http://www.openwall.com/lists/oss-security/2016/05/03/18. It checks type and pixel dimensions of uploaded image before ImageMagick touches it.
 
 <a href="https://evilmartians.com/">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
