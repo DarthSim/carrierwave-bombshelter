@@ -45,7 +45,7 @@ class YourUploader < CarrierWave::Uploader::Base
   include CarrierWave::BombShelter
 
   def image_type_whitelist
-    %i(bmp jpeg png gif)
+    [:bmp, :jpeg, :png, :gif]
   end
 end
 ```
