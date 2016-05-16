@@ -3,6 +3,9 @@ require 'carrierwave/bombshelter'
 
 require 'minitest/autorun'
 require 'webmock/minitest'
+require 'fog'
+require 'fog/aws'
+require 'pry'
 
 class TestBombShelter < Minitest::Test
   class TestUploader < CarrierWave::Uploader::Base
@@ -82,6 +85,19 @@ class TestBombShelter < Minitest::Test
     )
   end
 
+  def test_assign_fog_file
+    mock_fog
+
+    stub_request(
+      :get, 'https://bombshelter-tests.s3.amazonaws.com/uploads/small.jpg'
+    ).to_return(status: 200, body: fixture_file('small.png'))
+
+    u = TestUploader.new
+    u.store!(fixture_file('small.jpg'))
+
+    subject.store!(u)
+  end
+
   def test_callback_setup
     uploader = Class.new(CarrierWave::Uploader::Base)
     refute_includes(
@@ -97,5 +113,24 @@ class TestBombShelter < Minitest::Test
     yield
   ensure
     Kernel.silence_warnings { Object.const_set(name, orig) }
+  end
+
+  def mock_fog
+    Fog.mock!
+
+    TestUploader.storage :fog
+    TestUploader.fog_credentials = fog_credentials
+    TestUploader.fog_directory = 'bombshelter-tests'
+
+    connection = ::Fog::Storage.new(fog_credentials)
+    connection.directories.create(key: 'bombshelter-tests')
+  end
+
+  def fog_credentials
+    {
+      provider:              'AWS',
+      aws_access_key_id:     'xxx',
+      aws_secret_access_key: 'yyy'
+    }
   end
 end

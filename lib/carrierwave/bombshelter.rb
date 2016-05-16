@@ -33,7 +33,7 @@ module CarrierWave
     private
 
     def protect_from_image_bomb!(new_file)
-      image = FastImage.new(new_file.path || get_real_file(new_file.file))
+      image = FastImage.new(get_file(new_file))
       check_image_type!(image)
       check_pixel_dimensions!(image)
     end
@@ -58,9 +58,15 @@ module CarrierWave
             )
     end
 
-    def get_real_file(file)
-      return file unless file.is_a? CarrierWave::SanitizedFile
-      get_real_file(file.file)
+    def get_file(file)
+      case file
+      when CarrierWave::Storage::Fog::File
+        file.url
+      when CarrierWave::SanitizedFile, CarrierWave::Uploader::Base
+        get_file(file.file)
+      else
+        file
+      end
     end
   end
 end
