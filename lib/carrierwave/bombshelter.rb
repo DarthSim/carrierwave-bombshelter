@@ -13,6 +13,11 @@ module CarrierWave
   module BombShelter
     extend ActiveSupport::Concern
 
+    FILE_WRAPPERS = [
+      CarrierWave::SanitizedFile,
+      CarrierWave::Uploader::Base
+    ]
+
     included do
       # `before` puts callback in the end of queue, but we need to run this
       # callback first.
@@ -59,14 +64,18 @@ module CarrierWave
     end
 
     def get_file(file)
-      case file
-      when CarrierWave::Storage::Fog::File
-        file.url
-      when CarrierWave::SanitizedFile, CarrierWave::Uploader::Base
-        get_file(file.file)
-      else
-        file
-      end
+      return file.url if in_fog?(file)
+      return get_file(file.file) if is_wrapped?(file)
+      file
+    end
+
+    def in_fog?(file)
+      defined?(CarrierWave::Storage::Fog) &&
+        file.is_a?(CarrierWave::Storage::Fog::File)
+    end
+
+    def is_wrapped?(file)
+      FILE_WRAPPERS.any? { |wrapper| file.is_a?(wrapper) }
     end
   end
 end
