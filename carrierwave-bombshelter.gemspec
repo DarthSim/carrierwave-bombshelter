@@ -28,7 +28,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'mime-types', '< 3.0'
 
-  spec.add_dependency 'activesupport', '>= 3.2.0'
   spec.add_dependency 'fastimage'
   spec.add_dependency 'carrierwave'
 end
