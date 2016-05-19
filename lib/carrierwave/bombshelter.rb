@@ -11,20 +11,20 @@ I18n.load_path = files.concat I18n.load_path
 
 module CarrierWave
   module BombShelter
-    extend ActiveSupport::Concern
-
     FILE_WRAPPERS = [
       CarrierWave::SanitizedFile,
       CarrierWave::Uploader::Base
     ]
 
-    included do
-      # `before` puts callback in the end of queue, but we need to run this
-      # callback first.
-      # before :cache, :protect_from_image_bomb!
-      self._before_callbacks = _before_callbacks.merge(
-        cache: [:protect_from_image_bomb!] + _before_callbacks[:cache]
-      )
+    def self.included(base)
+      base.class_eval do # or `module_eval`
+        # `before` puts callback in the end of queue, but we need to run this
+        # callback first.
+        # before :cache, :protect_from_image_bomb!
+        self._before_callbacks = _before_callbacks.merge(
+          cache: [:protect_from_image_bomb!] + _before_callbacks[:cache]
+        )
+      end
     end
 
     def max_pixel_dimensions
